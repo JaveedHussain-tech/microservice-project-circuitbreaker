@@ -1,0 +1,32 @@
+package com.example.auth.service;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.example.auth.model.User;
+import com.example.auth.model.Userdto;
+import com.example.auth.repository.UserRepository;
+
+@Service
+public class UserService {
+	
+	private final UserRepository userrepository;
+	private final PasswordEncoder passwordencoder;
+	
+	public UserService(UserRepository userrepository,PasswordEncoder passwordencoder) {
+		this.userrepository=userrepository;
+		this.passwordencoder=passwordencoder;
+	}
+	
+	public Userdto saveuser(User user) {
+		
+		user.setPassword(passwordencoder.encode(user.getPassword()));
+		User saveduser=userrepository.save(user);
+		
+		return new Userdto(saveduser.getId(),
+				saveduser.getUsername(),
+				saveduser.getRoles(),
+				saveduser.getRoles());
+	}
+
+}

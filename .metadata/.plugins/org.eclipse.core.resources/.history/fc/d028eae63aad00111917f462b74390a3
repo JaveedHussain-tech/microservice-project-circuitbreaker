@@ -1,0 +1,21 @@
+package com.example.api.Exception;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.example.api.Exception.ErrorResponse;
+import com.example.api.Exception.FeignClientException;
+
+@RestControllerAdvice
+public class globalException {
+	
+	
+	@ExceptionHandler
+	public ResponseEntity<ErrorResponse> handleBadrequestException(BadRequestException ex){
+		ErrorResponse response=new ErrorResponse(ex.getMessage(), ex.getStatus());
+		return new ResponseEntity<>(response,ex.getStatus());
+		
+	}
+
+}

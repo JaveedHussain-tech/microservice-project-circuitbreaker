@@ -1,0 +1,14 @@
+package com.example.demo.model.Dto;
+
+import com.example.demo.model.Enums.AddressType;
+
+public class AddressRequestDto {
+	
+	private Long Id;
+	private String street;
+	private Long pincode;
+	private String city;
+	private String country;
+	 private AddressType addresstype;
+
+}

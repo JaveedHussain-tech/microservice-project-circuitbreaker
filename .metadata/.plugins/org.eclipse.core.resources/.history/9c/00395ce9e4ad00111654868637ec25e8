@@ -1,0 +1,29 @@
+package com.example.demo.client;
+
+import java.util.List;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import com.example.demo.model.dto.AddressRequest;
+import com.example.demo.model.dto.AddressRequestDto;
+import com.example.demo.model.dto.AddressDto;
+
+@FeignClient(name="Address")
+public interface AddressClient {
+	
+	@PostMapping("/address/save")
+	public ResponseEntity<List<AddressDto>> saveAddress(@RequestBody AddressRequest addressdto);
+	
+	
+	@GetMapping("/address/get/{id}")
+	List<AddressRequestDto> getSingleAddress(@PathVariable Long id);
+	
+	@GetMapping("/all")
+	public ResponseEntity<Iterable<AddressDto>> getAllAddress();
+
+}

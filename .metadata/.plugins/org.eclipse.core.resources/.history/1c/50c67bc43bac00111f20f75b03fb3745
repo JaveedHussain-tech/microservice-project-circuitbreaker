@@ -1,0 +1,17 @@
+package com.example.demo.Service;
+
+import java.util.List;
+
+import com.example.demo.model.Dto.AddressDto;
+import com.example.demo.model.Dto.AddressRequest;
+
+public interface AddressService {
+	
+	List<AddressDto> saveaddress(AddressRequest addressrequest);
+	List<AddressDto> updateaddress(AddressRequest addressrequest);
+	List<AddressDto> getsingleAddress(Long id);
+	List<AddressDto> getAllAddress();
+	
+	void deleteAddress(Long id);
+
+}

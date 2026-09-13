@@ -1,0 +1,9 @@
+package com.example.auth.model;
+
+public class Userdto {
+
+	private Long id;
+	private String Email;
+	private String UserName;
+	private String Roles;
+}

@@ -1,0 +1,9 @@
+package com.example.auth.util;
+
+
+@component
+public class JWTUtil {
+	
+	
+
+}

@@ -1,0 +1,73 @@
+package com.example.demo.Service.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.Repository.AddressRepository;
+import com.example.demo.Service.AddressService;
+import com.example.demo.model.Dto.AddressDto;
+import com.example.demo.model.Dto.AddressRequest;
+import com.example.demo.model.Dto.AddressRequestDto;
+import com.example.demo.model.Entity.Address;
+
+@Service
+public class AddressServiceimpl implements AddressService {
+	
+	private final AddressRepository addressRepository;
+
+	private final ModelMapper modelMapper;
+	
+	public AddressServiceimpl(AddressRepository addressRepository,ModelMapper modelMapper) {
+		this.addressRepository=addressRepository;
+		this.modelMapper = modelMapper;
+	}
+
+	@Override
+	public List<AddressDto> saveaddress(AddressRequest addressrequest) {
+		// TODO check if employee exists
+		
+		
+		List<Address> savetoList =new ArrayList();
+		for(AddressRequestDto addressrequestdto : addressrequest.getAddressRequestDtoList()) {
+			Address address= new Address();
+			address.setStreet(addressrequestdto.getStreet());
+			address.setCity(addressrequestdto.getCity());
+			address.setCountry(addressrequestdto.getCountry());
+			address.setPincode(addressrequestdto.getPincode());
+			address.setAddresstype(addressrequestdto.getAddresstype());
+			address.setEMPId(addressrequest.getEMPId());
+			savetoList.add(address);
+		}
+		
+		List<Address> savedAddress= addressRepository.saveAll(savetoList);
+		return savedAddress.stream().map( address ->modelMapper.map(address, AddressDto.class)).toList();
+	}
+
+	@Override
+	public AddressDto updateaddress(AddressRequest addressrequest) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public AddressDto getsingleAddress(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<AddressDto> getAllAddress() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void deleteAddress(Long id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

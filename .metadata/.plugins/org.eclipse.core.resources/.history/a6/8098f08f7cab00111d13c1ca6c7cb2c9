@@ -1,0 +1,23 @@
+package com.example.demo.model.Dto;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class AddressRequest {
+	
+	private Long EMPId;
+	private List<AddressRequestDto> addressrequestdto = new ArrayList<>();;
+	public Long getEMPId() {
+		return EMPId;
+	}
+	public void setEMPId(Long eMPId) {
+		EMPId = eMPId;
+	}
+	public List<AddressRequestDto> getAddressrequestdto() {
+		return addressrequestdto;
+	}
+	public void setAddressrequestdto(List<AddressRequestDto> addressrequestdto) {
+		this.addressrequestdto = addressrequestdto;
+	}
+
+}

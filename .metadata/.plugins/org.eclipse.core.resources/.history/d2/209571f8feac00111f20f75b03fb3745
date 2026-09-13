@@ -1,0 +1,31 @@
+package com.example.auth.controller;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.example.auth.model.User;
+import com.example.auth.model.Userdto;
+import com.example.auth.service.UserService;
+
+@Controller
+@RequestMapping("/Auth")
+public class Usercontroller {
+	
+	private UserService userservice;
+	
+	public  Usercontroller(UserService userservice) {
+		this.userservice=userservice;
+	}
+	
+	@PostMapping("/Register")
+	public ResponseEntity<Userdto> saveuser(@RequestBody User user) {
+		Userdto userdto=userservice.saveuser(user);
+		return new ResponseEntity<>(userdto,HttpStatus.CREATED);
+		
+	}
+
+}

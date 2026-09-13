@@ -1,0 +1,31 @@
+spring:cloud:
+ gateway:
+ discovery:
+     locator:
+     enabled: true
+
+routes:
+     - id: EMPLOYEE
+       uri: lb://employees
+       predicates:
+         - Path=/employee/**
+       filters:
+          - StripPrefix=1
+
+     - id: address-service
+       uri: lb://address-service
+       predicates:
+           - Path=/address/**
+       filters:
+           - StripPrefix=1
+
+
+eureka:
+  instance:
+    prefer-ip-address: true
+
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/

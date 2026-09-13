@@ -1,0 +1,65 @@
+package com.example.demo.config;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+import org.springframework.http.HttpStatus;
+import feign.Response;
+import feign.codec.ErrorDecoder;
+import com.example.demo.Exceptions.FeignClientException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+
+
+public class FeignErrorDecoder implements ErrorDecoder{
+	
+
+	
+
+
+    @Override
+    public Exception decode(String methodKey, Response response) {
+
+        HttpStatus status = HttpStatus.valueOf(response.status());
+
+        System.out.println("========== FEIGN ERROR ==========");
+        System.out.println("Method : " + methodKey);
+        System.out.println("Status : " + response.status());
+        System.out.println("Reason : " + response.reason());
+
+        if (response.body() == null) {
+
+            System.out.println("Employee service returned NO BODY");
+            System.out.println("=================================");
+
+            return new FeignClientException(
+                    "Employee service returned error: " + status,
+                    status
+            );
+        }
+
+        try (InputStream is = response.body().asInputStream()) {
+
+            String errorBody = new String(is.readAllBytes());
+
+            System.out.println("========== Address ERROR BODY ==========");
+            System.out.println(errorBody);
+            System.out.println("=========================================");
+
+            return new FeignClientException(
+                    errorBody,
+                    status
+            );
+        } catch (IOException e) {
+
+            e.printStackTrace();
+
+            return new FeignClientException(
+                    "Employee service returned error: " + status,
+                    status
+            );
+        }
+    }
+ 
+
+}

@@ -1,0 +1,18 @@
+package com.example.auth.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.example.auth.service.UserService;
+
+@Controller
+@RequestMapping("/Auth")
+public class Usercontroller {
+	
+	private UserService userservice;
+	
+	public  Usercontroller(UserService userservice) {
+		this.userservice=userservice;
+	}
+
+}

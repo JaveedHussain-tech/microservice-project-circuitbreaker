@@ -1,0 +1,40 @@
+package com.example.demo.Controller;
+
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.demo.Service.AddressService;
+import com.example.demo.model.Dto.AddressDto;
+import com.example.demo.model.Dto.AddressRequest;
+
+@RestController
+@RequestMapping("/address")
+public class AddressController {
+	
+	private final AddressService addressService;
+	
+	public AddressController(AddressService addressService) {
+		this.addressService=addressService;
+	}
+	
+	@PostMapping("/save")
+	public ResponseEntity<List<AddressDto>> saveAddress(@RequestBody AddressRequest addressdto){
+		List<AddressDto>response =addressService.saveaddress(addressdto);
+		return new ResponseEntity<>(response,HttpStatus.CREATED);
+	}
+	
+	@PutMapping("/update/{EMPId}")
+	public ResponseEntity<List<AddressDto>> updateAddress(@RequestBody AddressRequest addressdto, @PathVariable Long empid ){
+		List<AddressDto>response =addressService.updateaddress(addressdto);
+		return new ResponseEntity<>(response,HttpStatus.OK);
+	}
+
+}

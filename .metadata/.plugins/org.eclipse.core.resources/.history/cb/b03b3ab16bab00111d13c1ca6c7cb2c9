@@ -1,0 +1,28 @@
+package com.example.demo.Exception;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.example.demo.Exceptions.BadRequestException;
+import com.example.demo.Exceptions.ResourcenotfoundException;
+import com.example.demo.Exceptions.Response;
+
+@RestControllerAdvice
+public class GlobalException {
+	
+	@ExceptionHandler
+	public ResponseEntity<Response> handleresourcenotfoundException(ResourcenotfoundException ex){
+		Response response=new Response(ex.getMessage(), ex.getStatus());
+		return new ResponseEntity<>(response,ex.getStatus());
+		
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<Response> handleBadrequestException(BadRequestException ex){
+		Response response=new Response(ex.getMessage(), ex.getStatus());
+		return new ResponseEntity<>(response,ex.getStatus());
+		
+	}
+
+}

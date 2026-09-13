@@ -1,0 +1,24 @@
+package com.example.demo.config;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import feign.Response;
+
+public class FeignErrorDecoder implements ErrorDecoder{
+	
+	@Override
+    public Exception decode(String methodKey, Response response) {
+		
+		ObjectMapper objectMapper=new ObjectMapper();
+		objectMapper.findAndRegisterModules();
+		
+		try(InputStream is =response.body().asInputStream()){
+			ErrorResponse errorresponse=objectMapper.readValue(is, ErrorResponse.class);
+			return new FeignClientException(errorresponse.getMessage(),errorresponse.getstatus());
+		}
+		catch(IOException e) {
+			throw new FeignClientException("INTERNALE_SERVER_ERROR");
+		}
+	}
+
+}

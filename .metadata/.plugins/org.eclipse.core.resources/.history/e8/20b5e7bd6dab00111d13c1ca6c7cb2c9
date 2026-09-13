@@ -1,0 +1,20 @@
+package com.example.demo.model.Entity;
+
+import com.example.demo.model.Enums.AddressType;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+
+@Entity
+public class Address {
+	
+	private Long Id;
+	private Long EMPId;
+	private String street;
+	private Long pincode;
+	private String city;
+	private String country;
+	
+	@Enumerated(EnumType.STRING)
+    private AddressType addresstype;
+}

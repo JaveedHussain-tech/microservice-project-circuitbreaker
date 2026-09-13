@@ -1,0 +1,15 @@
+package com.example.demo.model.Entity;
+
+import jakarta.persistence.Entity;
+
+@Entity
+public class Address {
+	
+	private Long Id;
+	private Long EMPId;
+	private String street;
+	private Long pincode;
+	private String city;
+	private String country;
+
+}

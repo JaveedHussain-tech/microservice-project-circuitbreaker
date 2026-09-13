@@ -1,0 +1,12 @@
+package com.example.demo.Service;
+
+import com.example.demo.model.Dto.AddressDto;
+import com.example.demo.model.Dto.AddressRequest;
+
+public interface AddressService {
+	
+	AddressDto saveaddress(AddressRequest addressrequest);
+	AddressDto updateaddress(AddressRequest addressrequest);
+	
+
+}

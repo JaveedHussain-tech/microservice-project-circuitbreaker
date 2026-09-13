@@ -1,0 +1,30 @@
+package com.example.auth.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+import com.example.auth.model.User;
+import com.example.auth.repository.UserRepository;
+
+
+public class MyUserDetailsService implements UserDetailsService {
+	
+	
+	private UserRepository userrepository;
+
+	public MyUserDetailsService(UserRepository userrepository) {
+		this.userrepository = userrepository;
+		}
+	
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		// TODO Auto-generated method stub
+		
+			User user=userrepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("user not found"));
+		
+		return new MyUserDetails(user);
+	}
+
+}

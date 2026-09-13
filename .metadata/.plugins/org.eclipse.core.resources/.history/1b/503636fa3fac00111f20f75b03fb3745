@@ -1,0 +1,83 @@
+package com.example.demo.service.impl;
+
+import java.util.List;
+import java.util.Objects;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.AddressClient;
+import com.example.demo.Exceptions.BadRequestException;
+import com.example.demo.Exceptions.ResourcenotfoundException;
+import com.example.demo.model.Entity.Employee;
+import com.example.demo.model.dto.EmployeeDto;
+import com.example.demo.repository.EmployeeRepository;
+import com.example.demo.service.EmployeeService;
+
+@Service
+public class EmployeeServiceImpl implements EmployeeService {
+
+	private final EmployeeRepository employeeRepository;
+
+	private final ModelMapper modelMapper;
+	
+	private final AddressClient addressclient;
+	
+	public EmployeeServiceImpl(EmployeeRepository employeeRepository,ModelMapper modelMapper, AddressClient addressclient) {
+		this.employeeRepository=employeeRepository;
+		this.modelMapper = modelMapper;
+	    this.addressclient=addressclient;
+	}
+	
+	
+	
+	public EmployeeDto saveEmployee(EmployeeDto employeeDto) {
+		if(employeeDto.getId() != null) {
+			throw new ResourcenotfoundException("Employee Already exists", HttpStatus.NOT_FOUND);
+		}
+		Employee entity=modelMapper.map(employeeDto, Employee.class);
+		Employee saveEntity=employeeRepository.save(entity);
+		return modelMapper.map(saveEntity, EmployeeDto.class);
+	}
+
+
+	public EmployeeDto updateEmployee(Long id, EmployeeDto employeeDto) {
+		if(id == null || employeeDto.getId() == null) {
+			throw new BadRequestException("Please provide employee id",HttpStatus.BAD_REQUEST);
+		}
+		if(!Objects.equals(id, employeeDto.getId())) {
+			throw new BadRequestException("Id mismatch",HttpStatus.BAD_REQUEST);
+		}
+		employeeRepository.findById(id).orElseThrow(()-> new ResourcenotfoundException("Employee not found",HttpStatus.NOT_FOUND));
+		Employee entity=modelMapper.map(employeeDto, Employee.class);
+		Employee updateEntity=employeeRepository.save(entity);
+		return modelMapper.map(updateEntity, EmployeeDto.class);
+		
+	}
+
+	
+	public void deleteEmployee(Long id) {
+		Employee employee= employeeRepository.findById(id).orElseThrow(()-> new ResourcenotfoundException("Employee not found",HttpStatus.NOT_FOUND));
+   employeeRepository.delete(employee);
+		
+	}
+
+	
+	public EmployeeDto getSingleEmployee(Long id) {
+		Employee employee= employeeRepository.findById(id).orElseThrow(()-> new ResourcenotfoundException("Employee not found", HttpStatus.NOT_FOUND));
+		 
+		return modelMapper.map(employee, EmployeeDto.class);
+	}
+
+	
+	public List<EmployeeDto> getAllEmployees() {
+		List<Employee> employees=employeeRepository.findAll();
+		return employees.stream().map((Employee emp) -> modelMapper.map(emp, EmployeeDto.class)).toList();
+		
+		
+	}
+	
+
+}

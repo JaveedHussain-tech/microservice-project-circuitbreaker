@@ -1,0 +1,37 @@
+package com.example.auth.model;
+
+public class Userdto {
+
+	private Long id;
+	private String Email;
+	private String UserName;
+	@Override
+	public String toString() {
+		return "Userdto [id=" + id + ", Email=" + Email + ", UserName=" + UserName + ", Roles=" + Roles + "]";
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getEmail() {
+		return Email;
+	}
+	public void setEmail(String email) {
+		Email = email;
+	}
+	public String getUserName() {
+		return UserName;
+	}
+	public void setUserName(String userName) {
+		UserName = userName;
+	}
+	public String getRoles() {
+		return Roles;
+	}
+	public void setRoles(String roles) {
+		Roles = roles;
+	}
+	private String Roles;
+}

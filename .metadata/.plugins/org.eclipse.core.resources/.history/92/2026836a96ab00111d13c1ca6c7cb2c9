@@ -1,0 +1,111 @@
+package com.example.demo.Service.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.Repository.AddressRepository;
+import com.example.demo.Service.AddressService;
+import com.example.demo.model.Dto.AddressDto;
+import com.example.demo.model.Dto.AddressRequest;
+import com.example.demo.model.Dto.AddressRequestDto;
+import com.example.demo.model.Entity.Address;
+
+
+@Service
+public class AddressServiceimpl implements AddressService {
+	
+	private final AddressRepository addressRepository;
+
+	private final ModelMapper modelMapper;
+	
+	Logger log=LoggerFactory.getLogger(AddressServiceimpl.class);
+	
+	public AddressServiceimpl(AddressRepository addressRepository,ModelMapper modelMapper) {
+		this.addressRepository=addressRepository;
+		this.modelMapper = modelMapper;
+	}
+
+	@Override
+	public List<AddressDto> saveaddress(AddressRequest addressrequest) {
+		// TODO check if employee exists
+		
+	  List<Address> listtosave= this.saveorUpdateAddress(addressrequest);
+		
+		List<Address> savedAddress= addressRepository.saveAll(listtosave);
+		return savedAddress.stream().map( address ->modelMapper.map(address, AddressDto.class)).toList();
+	}
+
+	@Override
+	public List<AddressDto> updateaddress(AddressRequest addressrequest) {
+		// TODO Auto-generated method stub
+		List<Address> addressbyEmpid=addressRepository.findAllByEMPID(addressrequest.getEmpid());
+		if(addressbyEmpid.isEmpty()) {
+			log.info("No adress found for employee id{}",addressrequest.getEmpid());
+			log.info("Creating new address for employee id{}", addressrequest.getEmpid());
+		}
+		
+		List<Address> ListtoUpdate=this.saveorUpdateAddress(addressrequest);
+		
+		List<Long> upcomingNonNullIds =ListtoUpdate.stream().map(Address::getId).filter(Objects :: nonNull).toList();
+		List<Long> existingIds= addressbyEmpid.stream().map(Address::getId).toList();
+		
+		List<Long> idsTodelete=existingIds.stream().filter(id -> !upcomingNonNullIds.contains(id)).toList();
+		if(idsTodelete.isEmpty()) {
+			addressRepository.deleteAllById(idsTodelete);
+		}
+		
+		List<Address> updateAddress = addressRepository.saveAll(ListtoUpdate);
+		
+		return updateAddress.stream().map(address -> modelMapper.map(address,  AddressDto.class)).toList();
+	
+	}
+
+	@Override
+	public AddressDto getsingleAddress(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<AddressDto> getAllAddress() {
+		// TODO Auto-generated method stub
+		
+			List<Address> employees=addressRepository.findAll();
+			return employees.stream().map((Address add) -> modelMapper.map(add, AddressDto.class)).toList();
+	
+	}
+
+	@Override
+	public void deleteAddress(Long id) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	private List<Address> saveorUpdateAddress(AddressRequest addressrequest){
+		
+		List<Address> savetoList =new ArrayList<>();
+		for(AddressRequestDto addressrequestdto : addressrequest.getAddressrequestdto()) {
+			Address address= new Address();
+			
+			address.setId(addressrequestdto.getId() !=null ? addressrequestdto.getId() : null);
+			address.setStreet(addressrequestdto.getStreet());
+			address.setCity(addressrequestdto.getCity());
+			address.setCountry(addressrequestdto.getCountry());
+			address.setPincode(addressrequestdto.getPincode());
+			address.setAddresstype(addressrequestdto.getAddresstype());
+			address.setempid(addressrequest.getEmpid());
+			savetoList.add(address);
+		}
+		
+		return savetoList;
+		
+	
+	}
+
+}

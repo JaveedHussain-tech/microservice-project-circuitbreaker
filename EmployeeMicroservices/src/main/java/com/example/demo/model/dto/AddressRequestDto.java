@@ -1,0 +1,51 @@
+package com.example.demo.model.dto;
+
+import com.example.demo.model.dto.AddressType;
+
+public class AddressRequestDto {
+	
+	private Long Id;
+	private String street;
+	private Long pincode;
+	private String city;
+	private String country;
+	 private AddressType addresstype;
+	 
+	 public Long getId() {
+		 return Id;
+	 }
+	 public void setId(Long id) {
+		 Id = id;
+	 }
+	 public String getStreet() {
+		 return street;
+	 }
+	 public void setStreet(String street) {
+		 this.street = street;
+	 }
+	 public Long getPincode() {
+		 return pincode;
+	 }
+	 public void setPincode(Long pincode) {
+		 this.pincode = pincode;
+	 }
+	 public String getCity() {
+		 return city;
+	 }
+	 public void setCity(String city) {
+		 this.city = city;
+	 }
+	 public String getCountry() {
+		 return country;
+	 }
+	 public void setCountry(String country) {
+		 this.country = country;
+	 }
+	 public AddressType getAddresstype() {
+		 return addresstype;
+	 }
+	 public void setAddresstype(AddressType addresstype) {
+		 this.addresstype = addresstype;
+	 }
+
+}

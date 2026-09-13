@@ -1,0 +1,33 @@
+package com.example.demo.Exceptions;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.example.demo.Exceptions.FeignClientException;
+
+
+@RestControllerAdvice
+public class globalException {
+	
+	@ExceptionHandler
+	public ResponseEntity<ErrorResponse> handleresourcenotfoundException(ResourcenotfoundException ex){
+		ErrorResponse response=new ErrorResponse(ex.getMessage(), ex.getStatus());
+		return new ResponseEntity<>(response,ex.getStatus());
+		
+	}
+	
+	@ExceptionHandler(FeignClientException.class)
+	public ResponseEntity<ErrorResponse> feignclientException(FeignClientException ex){
+		ErrorResponse response=new ErrorResponse(ex.getMessage(), ex.getStatus());
+		return new ResponseEntity<>(response,ex.getStatus());
+		
+	}
+	@ExceptionHandler
+	public ResponseEntity<ErrorResponse> handleBadrequestException(BadRequestException ex){
+		ErrorResponse response=new ErrorResponse(ex.getMessage(), ex.getStatus());
+		return new ResponseEntity<>(response,ex.getStatus());
+		
+	}
+
+}

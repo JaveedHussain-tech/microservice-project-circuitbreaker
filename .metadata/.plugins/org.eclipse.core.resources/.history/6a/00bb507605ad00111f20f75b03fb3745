@@ -1,0 +1,12 @@
+package com.example.auth.util;
+import org.springframework.stereotype.*;
+
+@Component
+public class JWTUtil {
+	
+	public String generateToken() {
+		return null;
+		
+	}
+
+}

@@ -1,0 +1,35 @@
+package com.example.auth.service;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.example.auth.model.User;
+import com.example.auth.model.Userdto;
+import com.example.auth.repository.UserRepository;
+import com.example.auth.util.JWTUtil;
+
+@Service
+public class UserService {
+	
+	private final UserRepository userrepository;
+	private final PasswordEncoder passwordencoder;
+	private final JWTUtil jwtutil;
+	
+	public UserService(UserRepository userrepository,PasswordEncoder passwordencoder, JWTUtil jwtutil) {
+		this.userrepository=userrepository;
+		this.passwordencoder=passwordencoder;
+		this.jwtutil=jwtutil;
+	}
+	
+	public Userdto saveuser(User user) {
+		
+		user.setPassword(passwordencoder.encode(user.getPassword()));
+		User saveduser=userrepository.save(user);
+		
+		return new Userdto(saveduser.getId(),
+				saveduser.getEmail(),
+				saveduser.getUsername(),
+				saveduser.getRoles());
+	}
+
+}
